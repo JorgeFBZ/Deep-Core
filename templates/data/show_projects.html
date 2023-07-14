@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+{% if not messages %}
+<section class="jumbotron jumbotron-fluid" id="main">
+  {% if not data %}
+  <section class="jumbotron jumbotron-fluid" id="main">
+    <section class="alert alert-warning" id = "error_box">
+      <p>No hay proyectos en la base de datos.</p>
+    </section>
+    <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+  </section>
+  {% endif %}
+
+  {% for project in data %}
+  <form action="{% url 'modify_projects' %}" method="post">
+    {% csrf_token %}
+    <section class="card" id="project_card">
+      <h5 class="display-7" style="margin-top: 15px; text-align: center;">Proyecto: {{project.project_id }}</h5>
+      <table class="container-fluid" id="card_table">
+        <tr>
+          <td class="display-8">Nº sondeos:</td>
+          <td class="display-8">{{ project.DH_count }}</td>
+        </tr>
+        <tr>
+          <td class="display-8"> Comentarios:</td>
+          <td class="text-justify" style="padding-right: 90px;">{{ project.comments }}</td>
+        </tr>
+      </table>
+      <section class="container container-fluid" id="card_btn">
+        <form action="{% url 'data_selection' %}" method="get">
+          <p>{{ project.ID }}</p>
+          <input type="text" hidden="true" name="project_id" value="{{project.project_id }}">
+          <button class="btn btn-secondary" type="submit" id="btn" value="info" name="action"><span class="fa fa-eye"
+              style="margin-right: 5px;"></span>Ver sondeos</button>
+          <button class="btn btn-danger" type="submit" id="btn" value="delete" name="action"> <span class="fa fa-trash"
+              style="margin-right: 5px;"></span>Borrar</button>
+        </form>
+      </section>
+    </section>
+  </form>
+  {% endfor %}
+
+</section>
+{% endif %}
+
+{% if messages %}
+<section class="jumbotron jumbotron-fluid" id="main">
+  <section class="alert alert-danger">
+    {{ messages }}
+  </section>
+  <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+</section>
+{% endif %}
+
+{% endblock %}

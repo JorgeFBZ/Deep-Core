@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<section class="jumbotron jumbotron-fluid" id="main">
+    <section class="alert alert-warning" >
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;></span>
+      <b>Usuario desconectado</b>
+      <button class="btn btn-secondary" type= "submit" href="{% url 'home' %}">Inicio</button>
+    </section>
+{% endblock %}

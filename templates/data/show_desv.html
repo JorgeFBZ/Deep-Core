@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+<section class="jumbotron jumbotron-fluid" id="main">
+
+    <h2 class="display-5" style="text-align: center;">Visualizar datos de desvíos</h2>
+    <h3 class="display-7">Sondeo: {{ DH_id }}</h3>
+    <table class="table table-striped table-hover">
+        <thead>
+            <td><b>Desde:</b></td>
+            <td><b>Hasta:</b></td>
+            <td><b>Inclinación:</b></td>
+            <td><b>Azimut:</b></td>
+        </thead>
+
+        <tbody>
+            {% for desv in data %}
+            <tr>
+                <td>{{ desv.From }}</td>
+                <td>{{ desv.To }}</td>
+                <td>{{ desv.inclination }}</td>
+                <td>{{ desv.azimuth }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="javascript:history.go(-1)" class="btn btn-secondary" style="margin-left: 50px;">Volver</a>
+    {% endblock %}

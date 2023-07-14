@@ -1,0 +1,90 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+<section class="jumbotron jumbotron-fluid" id="main">
+    <h2 class="display-5">Importar Ficheros</h2>
+    {% if not message %}
+    {% if not error %}
+
+    <!-- Datos de sondeo + imágenes -->
+    <section class="container-fluid">
+        {% csrf_token %}
+        <table class="table" style="margin-left: auto; margin-right: auto; width: 50%;">
+            <tr>
+                <td><label for="project"><b>Proyecto:</b></label></td>
+                <td><i>{{ DH.project_id }}</i>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="DH_id"><b>Nombre del sondeo:</b> </label></td>
+                <td><i>{{ DH.DH_id }}</i>
+                </td>
+            </tr>
+        </table>
+
+        <form method="post" action="{% url 'upload_imgs' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <section class="button-bar">
+                <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
+                <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
+                <label for="images_files"><b>Imágenes: </b></label>
+                <input class="btn btn-outline-dark" type="file" name="Images" id="Images" multiple="True"
+                    enctype="multipart/form-data" />
+                <input class="btn btn-primary" type="submit" value="Importar imagenes" />
+            </section>
+        </form>
+
+        <form action="{% url 'import_samples' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <section class="button-bar">
+                <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
+                <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
+                <label for="sample_file"><b>Fichero de muestras: </b></label>
+                <input class="btn btn-outline-dark" type="file" name="samples" id="samples" multiple="False"
+                    enctype="multipart/form-data" />
+                <input class="btn btn-primary" type="submit" value="Importar muestras"/>
+            </section>
+        </form>
+
+        <form action="{% url 'import_deviations' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <section class="button-bar">
+                <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
+                <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
+                <label for="sample_file"><b>Fichero de desvios: </b></label>
+                <input class="btn btn-outline-dark" type="file" name="deviations" id="deviations" multiple="False"
+                    enctype="multipart/form-data" />
+                <input class="btn btn-primary" type="submit" value="Importar desvios"/>
+            </section>
+        </form>
+  
+        <section>
+            <input class="btn btn-secondary" type="reset" />
+            <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+        </section>
+    </section>
+    {% endif %}
+    {% endif %}
+    {% if message %}
+    <section class="alert alert-success">
+        <p>{{ message }}</p>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Inicio</a>
+    </section>
+
+    {% endif %}
+    {% if error %}
+    <section class="alert alert-danger">
+        <h3>ERROR</h3>
+        <p>{{ error}}</p>
+        <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+    </section>
+    {% endif %}
+</section>
+
+
+
+
+
+
+{% endblock %}

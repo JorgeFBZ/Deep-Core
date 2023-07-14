@@ -1,0 +1,92 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+
+<section class="jumbotron jumbotron-fluid" id="main">
+    <h2 class="display-5" style="margin-top: 15px; text-align: center;">Seleccionar sondeos</h2>
+    <form action="" method="get" id="data_selection_bar">
+        {% csrf_token %}
+        <section class="jumbotron" style="display: inline-block;">
+            <label for="project_id">Proyecto:</label>
+            <input type="text" id="project_id" name="project_id" />
+            <input class="btn btn-primary" type="submit" value="Actualizar" style="margin-left: 20px;" />
+        </section>
+    </form>
+
+
+
+    <section id="data_table" style="width: 100%;">
+        <input class="form-control" id="searchInput" type="text" placeholder="Search.."
+            style="display: inline-block;" />
+        {% if Error %}
+        <section class="alert alert-warning" id="error_box">
+            <p>No datos para este proyecto.</p>
+        </section>
+        {% endif %}
+        {% if not Error %}
+        <table class="table table-striped table-hover" style="width: 100%;">
+            <thead>
+                <th>Nombre</th>
+                <th>Fecha de inicio</td>
+                <th>Azimut</th>
+                <th>Inclinación</th>
+            </thead>
+            <tbody>
+                {% for key, value in DH_data.items %}
+                <tr>
+                    <td>{{ value.DH_id }}</td>
+                    <td>{{ value.start_date }}</td>
+                    <td>{{ value.teo_azimuth }}</td>
+                    <td>{{ value.teo_incl }}</td>
+                    <td>
+                        <form action="{% url 'upload_imgs' %}" method="get">
+                            <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
+                            <button type="submit" class="btn btn-dark"><span class="fa fa-picture-o"></span></button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'modify_data' %}" method="get">
+                            <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
+                            <button class="btn btn-info" type="submit" value="info" name="action">
+                                <span class="fa fa-eye"></span></button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'modify_data' %}" method="get">
+                            <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
+                            <button class="btn btn-secondary" type="submit" value="update" name="action">
+                                <span class="fa fa-pencil"></span></button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'modify_data' %}" method="get">
+                            <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
+                            <button class="btn btn-danger" type="submit" value="delete" name="action">
+                                <span class="fa fa-trash"></span></button>
+                        </form>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        <section class="button-bar">
+            <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+        </section>
+    </section>
+</section>
+<!-- JS script para busqueda en la tabla -->
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#DH_data_table tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+{% endblock %}

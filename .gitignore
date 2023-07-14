@@ -1,0 +1,4 @@
+*.sqlite3
+github
+github.pub
+**/__pycache__/

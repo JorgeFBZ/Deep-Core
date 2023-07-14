@@ -1,0 +1,46 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+<section class="jumbotron jumbotron-fluid" id="main">
+    <h2 class="display-5" style="margin-top: 15px; text-align: center;">Crear un nuevo proyecto</h2>
+    <!-- Datos de sondeo + imágenes -->
+    <section class="container container-fluid" style="padding-left: 0px;">
+        <form method="post" action="">
+            {% csrf_token %}
+            {% for error in form %}
+            <section class="alert alert-danger">
+                <p>{{ error }} </p>
+            </section>
+            {% endfor %}
+
+            <section class="container">
+
+                <ul style="list-style: none;">
+                    <li class="input-group-lg">
+                        <section class="input-group-prepend" style="position: fixed;">
+                            <span class="input-group-text" id="project_creation"> Nombre del proyecto</span>
+                            <input type="text" class="form-control" id="project" name="project_name" required="True" />
+                        </section>
+                    </li>
+
+                    <li class="input-group-prepend" aria-label="large"
+                        style="position: relative; left: 250px; width: 60%;">
+                        <span class="input-group-text" id="project_creation"> Comentarios</span>
+                        <textarea class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm"
+                            id="comments" name="comments"></textarea>
+                    </li>
+                </ul>
+
+                <section class="button-bar">
+                    <button class="btn btn-primary" type="submit">Crear proyecto</button>
+                    <button class="btn btn-secondary" type="reset">Reset</button>
+                    <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+                </section>
+            </section>
+        </form>
+    </section>
+
+
+
+    {% endblock %}

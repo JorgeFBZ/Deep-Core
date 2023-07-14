@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+
+<section class="jumbotron jumbotron-fluid" id="main">
+    <section class="alert alert-danger" id = "error_box">
+        <h2 class="display-5">Datos borrados</h2>
+        {% for field in data %}
+        <table class="table table-striped" style="width: 75%; margin: auto;">
+            <tr>
+                <td><b>Proyecto:</b></td>
+                <td>{{ field.project }}</td>
+
+                <td><b>Coordenada Norte:</b></td>
+                <td>{{ field.northing }}</td>
+
+            <tr>
+                <td><b>Nombre del sondeo:</b></td>
+                <td>{{ field.DH_id }}</td>
+
+                <td><b>Coordenada Este:</b></td>
+                <td>{{ field.easting }}</td>
+            </tr>
+            <tr>
+                <td><b>Fecha de inicio:</b></td>
+                <td>{{ field.start_date}}</td>
+
+                <td><b>Elevación:</b></td>
+                <td>{{ field.elevation }}</td>
+            </tr>
+            <tr>
+                <td><b>Fecha de finalización:</b></td>
+                <td>{{ field.end_date }}</td>
+
+                <td><b>Zona UTM:</b></td>
+                <td>{{ field.UTM_Zone }}</td>
+            </tr>
+            <tr>
+                <td><b>Azimut teórico:</b></td>
+                <td>{{ field.teo_azimuth }}</td>
+
+                <td><b>Azimut real:</b></td>
+                <td>{{ field.real_azimuth }}</td>
+            </tr>
+            <tr>
+                <td><b>Inclinación teórica:</b></td>
+                <td>{{ field.teo_incl }}</td>
+
+                <td><b>Inclinación real:</b></td>
+                <td>{{ field.real_incl }}</td>
+            </tr>
+        </table>
+        {% endfor %}
+        <a href="{% url 'home' %}" class="btn btn-secondary">Inicio</a>
+
+
+    </section>
+
+    {% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+{% if not error %}
+<section class="jumbotron jumbotron-fluid" id="main">
+  <h2 class="display-6" style="text-align: center;">Sondeo: {{ DH_id }}</h2>
+  <h2 class="display-7" style="text-align: center;">Proyecto: {{ project }}</h2>
+
+  {% if images %}
+  <table class="img_table" style="margin-left: auto; margin-right: auto;">
+    {% for pair in images %}
+    <tr>
+      {% for image in pair %}
+      <td>
+        {% if not image %}
+        <p class="alert alert-warning"><span class="fa fa-exclamation-triangle" aria-hidden="true"></span> La imagen no
+          ha sido procesada.</p>
+        {% endif %}
+        {% if image %}
+        <img src="{{ MEDIA_URL }}{{ image }}" class="img">
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+  <section class="jumbotron jumbotron-fluid" style="margin-top: 25px; height: 100px;">
+    <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+  </section>
+</section>
+{% endif %}
+{% endif %}
+
+{% if images == None %}
+<section class="jumbotron jumbotron-fluid" id="main">
+  <section class="alert alert-warning" id="error_box">
+    <p>No hay imágenes para este sondeo.</p>
+  </section>
+  <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+</section>
+{% endif %}
+
+{% if error %}
+<section class="jumbotron jumbotron-fluid" id="main">
+  <section class="alert alert-danger" id="error_box">
+    {{ error }}
+  </section>
+  <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+</section>
+{% endif %}
+
+{% endblock %}

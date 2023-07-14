@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+
+{% if project == none %}
+<section class="jumbotron jumbotron-fluid" id="main">
+    <h2 class="display-5">Creado un nuevo proyecto</h2>
+    <section class="alert alert-success">
+        <h3>Proyecto creado</h3>
+        <table class="import_data">
+            <tr>
+                <td><b> Proyecto:</b></td>
+                <td>{{ data.project_name }}</td>
+            </tr>
+            <tr>
+                <td><b> Comentarios:</b></td>
+                <td>{{ data.comments }}</td>
+            </tr>
+        </table>
+    </section>
+
+    {% else %}
+    
+    <section class="jumbotron jumbotron-fluid" id="main-section">
+        <section class="alert alert-danger">
+            <h2 class = "display-5">Error:</h2>
+            {% for error_message in project %}
+            {% if error_message == "projects with this project already exists." %}
+            <p>Ya existe un proyecto con este nombre.</p>
+            {% endif %}
+            {% endfor %}
+
+    {% endif %}
+
+    {% endblock %}

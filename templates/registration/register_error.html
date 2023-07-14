@@ -1,0 +1,37 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<section class="register-form" id="main">
+    <h2>Register</h2>
+    <section class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;></span>
+        <b>Error:</b> Registration not valid. Please try again.
+    </section>
+    <!-- Buche for del formulario from.py-->
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <p class="register-form">
+            {{ field.label_tag }}
+            {% if field.help_text %}
+            <span class="register-help"> {{ field.help_text}}</span>
+            {% endif %}
+            {{ field }}
+
+            {% for error in field.errors %}
+        <p class="alert">{{ error }}</p>
+        {% endfor %}
+        </p>
+        {% endfor %}
+        <ul style="display: flex; justify-content: space-around; list-style: none;">
+            <li><input type="submit" value="Register"></li>
+            <li><a style="color: black; font-weight: bold;" href="#">
+                    <input type="reset" value="Reset"></a></li>
+            <li><a style="color: black; font-weight: bold;" href="login.html">
+                    <input type="button" value="Back to Login"></a></li>
+        </ul>
+    </form>
+</section>
+
+{% endblock %}

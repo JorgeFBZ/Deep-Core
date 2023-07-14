@@ -1,0 +1,76 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+
+
+{% if not errors %}
+<section class="jumbotron jumbotron-fluid" id="main">
+    <h3>Datos importados</h3>
+    <div class="alert alert-success" role="alert">
+        <b>Datos importados correctamente.</b>
+    </div>
+    <table class="container-fluid" style="justify-content: center;">
+        <tr>
+            <td><b> Proyecto:</b></td>
+            <td>{{ data.project }}</td>
+        </tr>
+        <tr>
+            <td><b>Sondeo:</b></td>
+            <td>{{ data.DH_id }}</td>
+        </tr>
+        <tr>
+            <td><b> Azimut real:</b></td>
+            <td>{{ data.real_azimuth }}</td>
+        </tr>
+        <tr>
+            <td><b>Inclinación real:</b></td>
+            <td>{{ data.real_incl }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3>Coordenadas:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Cordenada Norte:</b></td>
+            <td>{{ data.northing }}</td>
+        </tr>
+        <tr>
+            <td><b>Cordenada Este:</b></td>
+            <td>{{ data.easting }}</td>
+        </tr>
+        <tr>
+            <td><b>Elevación:</b></td>
+            <td>{{ data.elevation }}</td>
+        </tr>
+    </table>
+    <section class="button-bar">
+        <form method="get" , action="{% url 'modify_data' %}">
+            {% csrf_token %}
+            <input type="text" hidden=True name=DH_id value="{{ data.DH_id }}">
+            <input type="text" hidden=True name=action value="update">
+            <input type="text" hidden=True name=project value="{{ data.project }}">
+            <a class="btn btn-secondary" href="{% url 'home' %}">Inicio</a>
+            <input class="btn btn-secondary" type="submit" value="Modificar datos">
+    </section>
+    <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+    </form>
+</section>
+{% endif %}
+
+{% if errors %}
+
+<section class="jumbotron jumbotron-fluid" id="main">
+    {% for error in errors %}
+    {% for e in error %}
+    <div class="alert alert-danger">
+        {{ e }}
+    </div>
+    {% endfor %}
+    {% endfor %}
+    <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+
+</section>
+{% endif %}
+{% endblock %}
