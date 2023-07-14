@@ -47,9 +47,9 @@ docker exec -it <nombre_contenedor> python manage.py createsuperuser
 <host-ip>:8000/home
 ```
 ## Screenshots
-![Image text](https://github.com/JorgeFBZ/Deep-core/blob/main/screenshots/imgs.png)
-![Image text](https://github.com/JorgeFBZ/Deep-core/blob/main/screenshots/samples.png)
-![Image text](https://github.com/JorgeFBZ/Deep-core/blob/main/screenshots/ver_datos.png)
-![Image text](https://github.com/JorgeFBZ/Deep-core/blob/main/screenshots/ver_sondeos.png)
+![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/imgs.png)
+![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/samples.png)
+![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/ver_datos.png)
+![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/ver_sondeos.png)
 =======
 
