@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Aplicación de Sondeos Geológicos con Segmentación de Imágenes utilizando Django y YOLOv8
 
 Este repositorio contiene una aplicación web desarrollada en Django que permite almacenar y gestionar datos de sondeos geológicos, así como realizar la segmentación de imágenes utilizando YOLOv8 para identificar tres categorías: cota, testigo y alta fracturación.
@@ -52,6 +52,4 @@ docker exec -it <nombre_contenedor> python manage.py createsuperuser
 ![Image text](https://github.com/JorgeFBZ/DH_Logger_AI/blob/main/screenshots/ver_datos.png)
 ![Image text](https://github.com/JorgeFBZ/DH_Logger_AI/blob/main/screenshots/ver_sondeos.png)
 =======
-# Deep-Core
-Aplicación web para la gestión de datos de sondeos.
->>>>>>> 2d8662f07404e4cb589b6915b3a15274a50d1161
+
