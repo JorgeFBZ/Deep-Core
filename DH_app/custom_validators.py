@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
 '''
 Validador de cuadricula UTM del modelo General_DH
 '''
@@ -39,3 +38,5 @@ def UTM_Validator(form_input):
         raise ValidationError(
             _('%(Zone)s is not a correct UTM Zone'),
             params={'Zone': form_input},)
+
+# TODO Litho validator

@@ -41,12 +41,15 @@ urlpatterns = [
     # Ver imagenes del sondeo
     path("ShowImages/", show_images, name = 'show_images'),
 
-    # Importar datos (desvios + muestras)
+    # Muestras
     path("import_samples/", import_samples, name = 'import_samples'),
     path("show_samples/", show_samples, name = 'show_samples'),
-
+    # Desvios
     path("import_deviations/", import_deviations, name = 'import_deviations'),
     path("show_deviations/", show_deviations, name = 'show_desv'),
+    # Litologías
+    path("import_litho/", import_litho, name = 'import_litho'),
+    path("show_litho/", show_litho, name = 'show_litho'),
 
 
 

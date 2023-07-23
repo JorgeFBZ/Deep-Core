@@ -24,7 +24,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.conf import settings
 from DH_app.serializer import ImportSerializer, ProjectSerializer
-from DH_app.models import General_DH, Projects, Sample_model, Desv_model
+from DH_app.models import *
 from DH_app.form import *
 from django.contrib.auth.decorators import login_required
 
@@ -479,12 +479,16 @@ def import_samples (request):
             
             for row in csv_data:
                 DH_id_file = row[0]
-                DH_id = General_DH.objects.get(DH_id = DH_id_file)
                 try:
+                    DH_id = General_DH.objects.get(DH_id = DH_id_file)
                     From = float(row[1])
                     To = float(row[2])
                     Element_1 = float(row[3])
                     Element_2 = float(row[4])
+                except General_DH.DoesNotExist:
+                    error = "El sondeo no esta en la base de datos."
+                    return render(request, "data/import_files.html", {"error": error})
+
                 except ValueError:
                     error = "Error al importar los datos: alguno de las columnas no contiene valores válidos"
                     return render(request, "data/import_files.html", {"error": error})
@@ -504,6 +508,9 @@ def import_samples (request):
                     error = "Error al importar los datos."
                     return render(request, "data/import_files.html", {"error": error})                            
             return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})                            
+        else:
+            error = "No hay ningún fichero para importar."
+            return render(request, "data/import_files.html", {"error": error})
 
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
@@ -551,15 +558,21 @@ def import_deviations (request):
             next(csv_data) # saltar la primera fila con los encabezdos
             for row in csv_data:
                 DH_id_file = row[0]
-                DH_id = General_DH.objects.get(DH_id = DH_id_file)
                 try:
+                    DH_id = General_DH.objects.get(DH_id = DH_id_file)
                     From = float(row[1])
                     To = float(row[2])
                     inclination = float(row[3])
                     azimuth = float(row[4])
+ 
+                except General_DH.DoesNotExist:
+                    error = "El sondeo no esta en la base de datos."
+                    return render(request, "data/import_files.html", {"error": error})
+               
                 except ValueError:
                     error = "Error al importar los datos: alguna de las columnas no contiene valores válidos"
                     return render(request, "data/import_files.html", {"error": error})
+                
                 except Exception:
                     error = "Error al cargar los datos."
                     return render(request, "data/import_files.html", {"error": error})                            
@@ -576,6 +589,66 @@ def import_deviations (request):
                     error = "Error al importar los datos."
                     return render(request, "data/import_files.html", {"error": error})                            
             return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})                            
+        else:
+            error = "No hay ningún fichero para importar."
+            return render(request, "data/import_files.html", {"error": error})
+
+    else:
+        return Response( status=status.HTTP_400_BAD_REQUEST)
+
+@login_required(login_url=settings.LOGIN_URL)
+@api_view(["POST"])
+def import_litho (request):
+    if request.method == "POST":
+        DH_id = request.POST.get("DH_id")
+        Litho = Lithos.objects.values_list("Litho_label", flat=True)
+        print(Litho)
+        if request.FILES.get("litho"):
+            file = request.FILES.get("litho")
+            data = file.read().decode("utf-8")
+            csv_data = csv.reader(data.splitlines(), delimiter=";")
+            next(csv_data) # saltar la primera fila con los encabezdos
+            for row in csv_data:
+                DH_id_file = row[0]
+                
+                try:
+                    DH_id = General_DH.objects.get(DH_id = DH_id_file)
+                    From = float(row[1])
+                    To = float(row[2])
+                    Litho_label = row[3]
+                    assert Litho_label in Litho
+
+                except AssertionError:
+                    error = f"La litología {Litho_label} no esta introducida. Contacte con el administrador."
+                    return render(request, "data/import_files.html", {"error": error})
+ 
+                except General_DH.DoesNotExist:
+                    error = "El sondeo no esta en la base de datos."
+                    return render(request, "data/import_files.html", {"error": error})
+
+                except ValueError:
+                    error = "Error al importar los datos: alguna de las columnas no contiene valores válidos"
+                    return render(request, "data/import_files.html", {"error": error})
+                
+                except Exception:
+                    error = f"Error al cargar los datos. {e}"
+                    return render(request, "data/import_files.html", {"error": error})                            
+
+                try:
+                    Lithos_DH(
+                        DH_id= DH_id,
+                        From = From,
+                        To = To,
+                        Litho_label = Lithos.objects.get(Litho_label=Litho_label),
+                    ).save()
+                except Exception as e:
+                    error = f"Error al cargar los datos. {e}"
+                    return render(request, "data/import_files.html", {"error": error})                            
+            return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})                            
+        
+        else:
+            error = "No hay ningún fichero para importar."
+            return render(request, "data/import_files.html", {"error": error})
 
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
@@ -631,3 +704,17 @@ def show_deviations(request):
         return render(request, "data/show_desv.html", {"data": data, "DH_id": DH_id})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
+    
+
+@login_required(login_url=settings.LOGIN_URL)
+@api_view(["GET"])
+def show_litho(request):
+    if request.method == "GET":
+        DH_id = request.GET.get("DH_id")
+        ID = General_DH.objects.filter(DH_id=DH_id).values()[0]["ID"] # obtener el ID del sondeo
+        data = Lithos_DH.objects.filter(DH_id=ID).values()
+        # print (data)
+        return render(request, "data/show_litho.html", {"data": data, "DH_id": DH_id})
+    else:
+        return Response( status=status.HTTP_400_BAD_REQUEST)
+    

@@ -2,3 +2,4 @@
 github
 github.pub
 **/__pycache__/
+**/migrations/

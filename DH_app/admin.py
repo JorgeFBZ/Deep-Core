@@ -23,9 +23,25 @@ from .models import *
 # Register your models here.
 
 @admin.register(Projects)
-class ProyectosAdmin(admin.ModelAdmin):
-    list_display = ("project_name",)
+class Projects_admin(admin.ModelAdmin):
+    list_display = ("project_name","comments")
 
 @admin.register(General_DH)
-class DH (admin.ModelAdmin):
-    list_display = ("ID", "DH_id")
+class DH_admin(admin.ModelAdmin):
+    list_display = ("ID", "DH_id","project","teo_azimuth", "teo_incl")
+
+@admin.register(Desv_model)
+class Desv_model_admin(admin.ModelAdmin):
+    list_display = ("DH_id", "From", "To", "inclination", "azimuth")
+
+@admin.register(Sample_model)
+class Sample_model_admin(admin.ModelAdmin):
+    list_display = ("DH_id", "From", "To", "element_1", "element_2")
+
+@admin.register(Lithos)
+class Lithos_admin(admin.ModelAdmin):
+    list_display = ("Litho", "Litho_label","Description")
+
+@admin.register(Lithos_DH)
+class Lithos_DH_admin(admin.ModelAdmin):
+    list_display = ("DH_id", "From", "To", "Litho_label")

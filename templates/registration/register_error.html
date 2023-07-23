@@ -2,36 +2,26 @@
 
 {% block content %}
 
-<section class="register-form" id="main">
-    <h2>Register</h2>
-    <section class="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;></span>
-        <b>Error:</b> Registration not valid. Please try again.
-    </section>
-    <!-- Buche for del formulario from.py-->
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <p class="register-form">
-            {{ field.label_tag }}
-            {% if field.help_text %}
-            <span class="register-help"> {{ field.help_text}}</span>
-            {% endif %}
-            {{ field }}
-
-            {% for error in field.errors %}
-        <p class="alert">{{ error }}</p>
+<section class="jumbotron jumbotron-fluid" id="main" style="width: 75%;  padding-left: 200px; margin-left: auto; margin-right: auto;">
+    <h2 class="display-5">Registro de nuevo usuario</h2>
+    {% csrf_token %}
+    <section class="alert alert-danger">
+        <h3 class="display-6">Error en el registro</h3>
+        {% for error in errors %}
+        {% for field, value in error.items %}
+        <h4 class="display-7" >{{ field }}</h4>
+        <ul>
+        {% for e in value %}
+            <li>
+                {{ e }}
+            </li>
         {% endfor %}
-        </p>
-        {% endfor %}
-        <ul style="display: flex; justify-content: space-around; list-style: none;">
-            <li><input type="submit" value="Register"></li>
-            <li><a style="color: black; font-weight: bold;" href="#">
-                    <input type="reset" value="Reset"></a></li>
-            <li><a style="color: black; font-weight: bold;" href="login.html">
-                    <input type="button" value="Back to Login"></a></li>
         </ul>
-    </form>
+        {% endfor %}
+        {% endfor %}
+    </section>
+    <a href="javascript:history.go(-1)" class="btn btn-secondary" style="margin-left: 50px;">Volver</a>
+
 </section>
 
 {% endblock %}

@@ -26,21 +26,21 @@ def image_directory_path(instance, filename):
     print (f"{str(instance.project_id)}/{filename}")
     return f"{str(instance.project_id)}/{filename}"
 
-# TODO Crear el modelo de datos para la BD de Proyectos
+# Modelo de datos de Proyectos
 class Projects(models.Model):
     project_name = models.CharField(primary_key=True,max_length=100, unique=True, help_text="Name of the project", blank=False, null=False)
     comments = models.TextField(max_length=1000, help_text="Description of the project", blank= True)
     
     class Meta:
-        verbose_name = "Project"
-        verbose_name_plural = "Projects"
+        verbose_name = "Proyecto"
+        verbose_name_plural = "Proyectos"
         db_table = "DH_app_projects"
   
     def __str__(self):
         return self.project_name
 
 
-
+# Modelo de datos para los datos del sondeo
 class General_DH(models.Model):
     ID = models.AutoField(primary_key=True, unique=True, help_text="Unique ID for the database management.")
     project = models.ForeignKey(Projects, on_delete=models.CASCADE, blank=False, null=False)
@@ -63,14 +63,13 @@ class General_DH(models.Model):
     elevation = models.FloatField(max_length=10, help_text="Elevation of the collar.")
 
     class Meta:
-        verbose_name = "Drill"
-        verbose_name_plural = "Drills"
+        verbose_name = "Sondeo"
+        verbose_name_plural = "Sondeos"
         db_table = "DH_app_General_DH"
 
 
 
-
-# Crear el modelo de datos para las muestras
+# Modelo de datos para las muestras
 class Sample_model (models.Model):
     ID = models.AutoField(primary_key=True, unique=True)
     DH_id = models.ForeignKey(General_DH, on_delete=models.CASCADE)
@@ -85,10 +84,11 @@ class Sample_model (models.Model):
                                 validators=[validators.MinValueValidator(0)])
     
     class Meta:
-        verbose_name = "Sample"
-        verbose_name_plural = "Samples"
-        db_table = "DH_app_sample_model"
-  
+        verbose_name = "Muestra"
+        verbose_name_plural = "Muestras"
+        db_table = "DH_app_Sample_model"
+
+# Modelo de datos para los desvios
 class Desv_model (models.Model):
     ID = models.AutoField(primary_key=True, unique=True)
     DH_id = models.ForeignKey(General_DH, on_delete=models.CASCADE)
@@ -104,12 +104,38 @@ class Desv_model (models.Model):
                                 validators=[validators.MinValueValidator(0),
                                             validators.MaxValueValidator(360)]) 
     class Meta:
-        verbose_name = "Deviation"
-        verbose_name_plural = "Deviations"
-        db_table = "DH_app_desv_model"
+        verbose_name = "Desviación"
+        verbose_name_plural = "Desviaciones"
+        db_table = "DH_app_Desv_model"
 
 class Images (models.Model):
     ID = models.AutoField(primary_key=True, unique=True)
     DH_id = models.ForeignKey(General_DH, on_delete=models.CASCADE, blank=False, null=False)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
     Images = models.FileField(blank=False)
+
+# Modelo de datos para el índice de litologias (Solo Admin)
+class Lithos(models.Model):
+    Litho = models.CharField(unique=True, max_length=500)
+    Litho_label = models.CharField(unique=True, primary_key=True, max_length=10)
+    Description = models.CharField(blank=True, max_length=1000)
+    
+    class Meta:
+        verbose_name = "Litología"
+        verbose_name_plural = "Litologías"
+        db_table = "DH_app_Lithos"
+
+# Modelo de datos para las litologias de los sondeos
+class Lithos_DH(models.Model):
+    ID = models.AutoField(unique=True, primary_key=True)
+    DH_id = models.ForeignKey(General_DH, on_delete=models.CASCADE, blank=False, null=False)
+    From = models.FloatField(max_length=10,blank=False, null=False,
+                                validators=[validators.MinValueValidator(0)])
+    To = models.FloatField(max_length=10,blank=False, null=False,
+                                validators=[validators.MinValueValidator(0)])
+    Litho_label = models.ForeignKey(Lithos, on_delete=models.CASCADE, blank=False, null=False)
+
+    class Meta:
+        verbose_name = "Litología sondeo"
+        verbose_name_plural = "Litologías sondeos"
+        db_table = "DH_app_Lithos_DH"

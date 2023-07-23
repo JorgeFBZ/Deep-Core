@@ -323,16 +323,26 @@
         </tr>
     </table>
     <section style="display: inline-block; padding-top: 25px;">
-        <table>
+        <table  style="margin-bottom: 25px;">
             <td style="margin-top: auto; margin-bottom: auto;">
+                <tr>
+                    <form action="{% url 'show_litho' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-arrows-v"></span>
+                            Ver datos de litologías</button>
+                    </form>
+                </tr>
                 <tr>
                     <form action="{% url 'show_desv' %}" method="get">
                         {% csrf_token %}
                         <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
                             hidden="true">
                         <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
-                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-arrows-v"></span>
-                            Ver datos de desvios</button>
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-check-square-o"></span>
+                            Ver datos de desvíos</button>
                     </form>
                 </tr>
                 <tr>
@@ -345,6 +355,9 @@
                             Ver datos de muestras</button>
                     </form>
                 </tr>
+                </td></table>
+                <table>
+                <td style="margin-top: auto; margin-bottom: auto;"></td>
                 <tr>
                     <form action="{% url 'show_images' %}" method="get">
                         {% csrf_token %}

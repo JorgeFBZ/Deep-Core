@@ -58,6 +58,18 @@
                 <input class="btn btn-primary" type="submit" value="Importar desvios"/>
             </section>
         </form>
+
+        <form action="{% url 'import_litho' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <section class="button-bar">
+                <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
+                <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
+                <label for="sample_file"><b>Fichero de litologías: </b></label>
+                <input class="btn btn-outline-dark" type="file" name="litho" id="litho" multiple="False"
+                    enctype="multipart/form-data" />
+                <input class="btn btn-primary" type="submit" value="Importar litologías"/>
+            </section>
+        </form>
   
         <section>
             <input class="btn btn-secondary" type="reset" />
@@ -81,10 +93,5 @@
     </section>
     {% endif %}
 </section>
-
-
-
-
-
 
 {% endblock %}

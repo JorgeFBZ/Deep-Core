@@ -25,9 +25,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 
 def home (request):
-    return render(request,
-                "home.html",
-                context={'Long1': 10, 'Long2': 5, 'Long3': 15}) 
+    return render(request,"home.html")
 
 @require_http_methods(["GET", "POST"])
 def register (request):
@@ -36,10 +34,16 @@ def register (request):
         return render (request, "registration/register.html",{"form": CustomUserCreationForm })
     elif request.method == "POST":
         form = CustomUserCreationForm(request.POST)
+
         if form.is_valid():
-            form.save() # Guardar los datos.
+            form.save() 
             username = form.cleaned_data.get("username")
             raw_password = form.cleaned_data.get( "password1")
             user = authenticate( username = username, password = raw_password)
             login(request, user)
-            return redirect (reverse ("home"))
+            return render(request,"home.html")
+        
+        else:
+           err = form.errors.get_json_data()
+           errors = [{k:[e["message"] for e in err[k]]} for k in err]
+           return render(request,"registration/register_error.html", context={"errors":errors})
