@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.conf import settings
 from DH_app.serializer import ImportSerializer, ProjectSerializer
@@ -675,8 +675,8 @@ def show_samples(request):
     """
     if request.method == "GET":
         DH_id = request.GET.get("DH_id")
-        ID = General_DH.objects.filter(DH_id=DH_id).values()[0]["ID"] # obtener el ID del sondeo
-        data = Sample_model.objects.filter(DH_id=ID).values()
+        sondeo = get_object_or_404(General_DH, DH_id=DH_id)
+        data = Sample_model.objects.filter(DH_id=sondeo).values()
         return render(request, "data/show_samples.html", {"data": data, "DH_id": DH_id})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
@@ -699,8 +699,8 @@ def show_deviations(request):
     """
     if request.method == "GET":
         DH_id = request.GET.get("DH_id")
-        ID = General_DH.objects.filter(DH_id=DH_id).values()[0]["ID"] # obtener el ID del sondeo
-        data = Desv_model.objects.filter(DH_id=ID).values()
+        sondeo = get_object_or_404(General_DH, DH_id=DH_id)
+        data = Desv_model.objects.filter(DH_id=sondeo).values()
         return render(request, "data/show_desv.html", {"data": data, "DH_id": DH_id})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
@@ -711,9 +711,8 @@ def show_deviations(request):
 def show_litho(request):
     if request.method == "GET":
         DH_id = request.GET.get("DH_id")
-        ID = General_DH.objects.filter(DH_id=DH_id).values()[0]["ID"] # obtener el ID del sondeo
-        data = Lithos_DH.objects.filter(DH_id=ID).values()
-        # print (data)
+        sondeo = get_object_or_404(General_DH, DH_id=DH_id)
+        data = Lithos_DH.objects.filter(DH_id=sondeo)
         return render(request, "data/show_litho.html", {"data": data, "DH_id": DH_id})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)

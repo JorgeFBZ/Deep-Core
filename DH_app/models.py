@@ -120,6 +120,9 @@ class Lithos(models.Model):
     Litho_label = models.CharField(unique=True, primary_key=True, max_length=10)
     Description = models.CharField(blank=True, max_length=1000)
     
+    def __str__(self):
+        return self.Litho
+    
     class Meta:
         verbose_name = "Litología"
         verbose_name_plural = "Litologías"

@@ -11,7 +11,9 @@
             <td><b>Desde:</b></td>
             <td><b>Hasta:</b></td>
             <td><b>Código litología</b></td>
-            <!-- <td><b>Litología</b></td> -->
+            <td><b>Litología</b></td>
+            <td><b>Descripción Litología</b></td>
+
         </thead>
 
         <tbody>
@@ -20,7 +22,8 @@
                 <td>{{ sample.From }}</td>
                 <td>{{ sample.To }}</td>
                 <td>{{ sample.Litho_label_id }}</td>
-                <!-- <td>{{ sample.Litho }}</td> -->
+                <td>{{ sample.Litho_label.Litho }}</td>
+                <td>{{ sample.Litho_label.Description }}</td>
             </tr>
             {% endfor %}
         </tbody>
