@@ -50,6 +50,7 @@ docker exec -it <nombre_contenedor> python manage.py createsuperuser
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/imgs.png)
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/samples.png)
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/ver_datos.png)
+![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/proyectos.png)
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/ver_sondeos.png)
 =======
 
