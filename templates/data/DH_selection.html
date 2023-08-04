@@ -9,7 +9,12 @@
         {% csrf_token %}
         <section class="jumbotron" style="display: inline-block;">
             <label for="project_id">Proyecto:</label>
-            <input type="text" id="project_id" name="project_id" />
+            <input type="search" id="project" name="project" list="project_list" />
+            <datalist id="project_list">
+                {% for project in projects %}
+                <option value="{{ project }}">{{ project }}</option>
+                {% endfor %}
+            </datalist>
             <input class="btn btn-primary" type="submit" value="Actualizar" style="margin-left: 20px;" />
         </section>
     </form>
@@ -41,28 +46,32 @@
                     <td>{{ value.teo_incl }}</td>
                     <td>
                         <form action="{% url 'upload_imgs' %}" method="get">
+                            {% csrf_token %}
                             <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
                             <button type="submit" class="btn btn-dark"><span class="fa fa-picture-o"></span></button>
                         </form>
                     </td>
                     <td>
-                        <form action="{% url 'modify_data' %}" method="get">
+                        <form action="{% url 'dh_show_data' %}" method="get">
+                            {% csrf_token %}
                             <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
-                            <button class="btn btn-info" type="submit" value="info" name="action">
+                            <button class="btn btn-info" type="submit">
                                 <span class="fa fa-eye"></span></button>
                         </form>
                     </td>
                     <td>
-                        <form action="{% url 'modify_data' %}" method="get">
+                        <form action="{% url 'update_data' %}" method="get">
+                            {% csrf_token %}
                             <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
-                            <button class="btn btn-secondary" type="submit" value="update" name="action">
+                            <button class="btn btn-secondary" type="submit" >
                                 <span class="fa fa-pencil"></span></button>
                         </form>
                     </td>
                     <td>
-                        <form action="{% url 'modify_data' %}" method="get">
+                        <form action="{% url 'delete_data' %}" method="get">
+                            {% csrf_token %}
                             <input type="number" name="ID" id="ID" value="{{ value.ID }}" hidden="true">
-                            <button class="btn btn-danger" type="submit" value="delete" name="action">
+                            <button class="btn btn-danger" type="submit" >
                                 <span class="fa fa-trash"></span></button>
                         </form>
                     </td>

@@ -48,7 +48,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "192.168.1.150", "0.0.0.0"]
+ALLOWED_HOSTS = ["localhost", "192.168.1.140"]
 
 
 # Application definition
@@ -224,3 +224,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # File upload configuration
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
+
+# CSV Delimiter
+# CSV_DELIMITER = ";"
+CSV_DELIMITER = "\t"

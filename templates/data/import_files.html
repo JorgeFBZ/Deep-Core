@@ -10,67 +10,75 @@
     <!-- Datos de sondeo + imágenes -->
     <section class="container-fluid">
         {% csrf_token %}
-        <table class="table" style="margin-left: auto; margin-right: auto; width: 50%;">
+        <table class="table-info">
             <tr>
-                <td><label for="project"><b>Proyecto:</b></label></td>
-                <td><i>{{ DH.project_id }}</i>
+                <td><h4>Proyecto:</h4></td>
+                <td><h5>{{ DH.project_id }}</h5>
                 </td>
             </tr>
             <tr>
-                <td><label for="DH_id"><b>Nombre del sondeo:</b> </label></td>
-                <td><i>{{ DH.DH_id }}</i>
+                <td><h4>Nombre del sondeo:</h4></td>
+                <td><h5>{{ DH.DH_id }}</h5>
                 </td>
             </tr>
         </table>
 
         <form method="post" action="{% url 'upload_imgs' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <section class="button-bar">
+            <section class="table-files">
                 <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
                 <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
-                <label for="images_files"><b>Imágenes: </b></label>
-                <input class="btn btn-outline-dark" type="file" name="Images" id="Images" multiple="True"
-                    enctype="multipart/form-data" />
-                <input class="btn btn-primary" type="submit" value="Importar imagenes" />
+                <table class="table">
+                    <td><label for="images_files"><b>Imágenes: </b></label></td>
+                    <td><input class="btn btn-outline-dark" type="file" name="Images" id="Images" multiple="True"
+                        enctype="multipart/form-data" /></td>
+                    <td><input class="btn btn-primary" type="submit" value="Importar imágenes"/></td>
+                </table>                
             </section>
         </form>
 
         <form action="{% url 'import_samples' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <section class="button-bar">
+            <section class="table-files">
                 <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
                 <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
-                <label for="sample_file"><b>Fichero de muestras: </b></label>
-                <input class="btn btn-outline-dark" type="file" name="samples" id="samples" multiple="False"
-                    enctype="multipart/form-data" />
-                <input class="btn btn-primary" type="submit" value="Importar muestras"/>
+                <table class="table">
+                    <td><label for="sample_file"><b>Fichero de muestras: </b></label></td>
+                    <td><input class="btn btn-outline-dark" type="file" name="samples" id="samples" multiple="False"
+                        enctype="multipart/form-data" /></td>
+                    <td><input class="btn btn-primary" type="submit" value="Importar muestras"/></td>
+                </table>
             </section>
         </form>
 
         <form action="{% url 'import_deviations' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <section class="button-bar">
+            <section class="table-files">
                 <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
-                <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
-                <label for="sample_file"><b>Fichero de desvios: </b></label>
-                <input class="btn btn-outline-dark" type="file" name="deviations" id="deviations" multiple="False"
-                    enctype="multipart/form-data" />
-                <input class="btn btn-primary" type="submit" value="Importar desvios"/>
+                <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">   
+                <table class="table">
+                    <td><label for="sample_file"><b>Fichero de desvíos: </b></label></td>
+                    <td><input class="btn btn-outline-dark" type="file" name="deviations" id="deviations" multiple="False"
+                        enctype="multipart/form-data" /></td>
+                    <td><input class="btn btn-primary" type="submit" value="Importar desvíos" /></td>
+                </table>
             </section>
         </form>
 
         <form action="{% url 'import_litho' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <section class="button-bar">
+            <section class="table-files">
                 <input type="text" name="project_id" id="project_id" value="{{ DH.project_id }}" hidden="true">
                 <input type="text" name="DH_id" id="DH_id" value="{{ DH.DH_id }}" hidden="true">
-                <label for="sample_file"><b>Fichero de litologías: </b></label>
-                <input class="btn btn-outline-dark" type="file" name="litho" id="litho" multiple="False"
-                    enctype="multipart/form-data" />
-                <input class="btn btn-primary" type="submit" value="Importar litologías"/>
+                <table class="table">
+                    <td><label for="sample_file"><b>Fichero de litologías: </b></label></td>
+                    <td><input class="btn btn-outline-dark" type="file" name="litho" id="litho" multiple="False"
+                        enctype="multipart/form-data" /></td>
+                    <td><input class="btn btn-primary" type="submit" value="Importar litologías" /></td>               
+            </table>
             </section>
         </form>
-  
+
         <section>
             <input class="btn btn-secondary" type="reset" />
             <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>

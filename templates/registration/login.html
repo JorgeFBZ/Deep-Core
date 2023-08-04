@@ -12,9 +12,13 @@
   {% endif %}
   {% if next %}
   {% if user.is_authenticated %}
+  <section class="alert alert-danger">
   <p>Este usuario no tiene acceso a esta página.</p>
+  </section>
   {% else %}
+  <section class="alert alert-warning">
   <p>Inicia sesión para acceder a esta página.</p>
+  </section>
   {% endif %}
   {% endif %}
 

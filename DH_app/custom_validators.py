@@ -38,5 +38,3 @@ def UTM_Validator(form_input):
         raise ValidationError(
             _('%(Zone)s is not a correct UTM Zone'),
             params={'Zone': form_input},)
-
-# TODO Litho validator

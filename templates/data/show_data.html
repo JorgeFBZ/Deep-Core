@@ -1,0 +1,114 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+<section class="jumbotron jumbotron-fluid" id="main">
+    <h2 class="display-5" style="text-align: center;">Visualizar datos</h2>
+    <table class="table table-striped">
+        <tr>
+            <td><b>Proyecto:</b></td>
+            <td>{{ data.project_id }}</td>
+
+            <td><b>Coordenada Norte:</b></td>
+            <td>{{ data.northing }}</td>
+
+        <tr>
+            <td><b>Nombre del sondeo:</b></td>
+            <td>{{ data.DH_id }}</td>
+
+            <td><b>Coordenada Este:</b></td>
+            <td>{{ data.easting }}</td>
+        </tr>
+        <tr>
+            <td><b>Fecha de inicio:</b></td>
+            <td>{{ data.start_date}}</td>
+
+            <td><b>Elevación:</b></td>
+            <td>{{ data.elevation }}</td>
+        </tr>
+        <tr>
+            <td><b>Fecha de finalización:</b></td>
+            <td>{{ data.end_date }}</td>
+
+            <td><b>Zona UTM:</b></td>
+            <td>{{ data.UTM_Zone }}</td>
+        </tr>
+        <tr>
+            <td><b>Azimut teórico:</b></td>
+            <td>{{ data.teo_azimuth }}</td>
+
+            <td><b>Azimut real:</b></td>
+            <td>{{ data.real_azimuth }}</td>
+        </tr>
+        <tr>
+            <td><b>Inclinación teórica:</b></td>
+            <td>{{ data.teo_incl }}</td>
+
+            <td><b>Inclinación real:</b></td>
+            <td>{{ data.real_incl }}</td>
+        </tr>
+    </table>
+    <section style="display: inline-block; padding-top: 25px;">
+        <table  style="margin-bottom: 25px;">
+            <td style="margin-top: auto; margin-bottom: auto;">
+                <tr>
+                    <form action="{% url 'show_litho' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ data.project_id }}" id="project" name="project"
+                            hidden="true">
+                        <input type="text" value="{{ data.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-arrows-v"></span>
+                            Ver datos de litologías</button>
+                    </form>
+                </tr>
+                <tr>
+                    <form action="{% url 'show_desv' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ data.project_id }}" id="project" name="project"
+                            hidden="true">
+                        <input type="text" value="{{ data.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-check-square-o"></span>
+                            Ver datos de desvíos</button>
+                    </form>
+                </tr>
+                <tr>
+                    <form action="{% url 'show_samples' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ data.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ data.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-bar-chart"></span>
+                            Ver datos de muestras</button>
+                    </form>
+                </tr>
+                </td></table>
+                <table>
+                <td style="margin-top: auto; margin-bottom: auto;"></td>
+                <tr>
+                    <form action="{% url 'show_images' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ data.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ data.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-primary" style="margin-left: 50px;"> <span
+                                class="fa fa-picture-o"></span> Ver imágenes</button>
+                    </form>
+                </tr>
+                <tr>
+                    <form action="{% url 'process_images' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" value="{{ data.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ data.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-success" style="margin-left: 50px;"> <span class="fa fa-magic"></span>
+                            Procesar
+                            imágenes</button>
+                    </form>
+                </tr>
+            </td>
+        </table>
+        <section style="margin-left: auto; margin-right: auto; padding-top: 50px;">
+            <a href="javascript:history.go(-1)" class="btn btn-secondary" style="margin-left: 50px;">Volver</a>
+
+        </section>
+        {% endblock %}

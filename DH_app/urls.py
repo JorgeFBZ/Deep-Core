@@ -28,23 +28,37 @@ urlpatterns = [
     path ("register/", views.register , name = 'register'),
     # Crear nuevo proyecto
     path ("newProject/", create_project, name= "create_project"),
-    # Modificar proyecto
-    path ("projects/", modify_project, name= 'modify_projects'),
-    # nuevo sondeo
-    path("new_DH/", new_hole, name= 'new_hole'),
-    # Importar imagenes
-    path("import_images/", upload_imgs, name = 'upload_imgs'),
-    # Modificar sondeo
-    path("modifyData/", modify_data, name = 'modify_data'),
+    # Borrar proyecto 
+    path ("delete_project/", delete_project, name= 'delete_project'),
+    # Mostrar proyectos
+    path ("show_projects/", show_project, name= 'show_projects'),
+    # Predilección sondeos
+    path ("info_projects/", info_project, name= 'info_projects'),
+
+    # Nuevo sondeo
+    path("new_dh/", new_hole, name= 'new_hole'),
     # Seleccionar sondeo
     path("SelectData/", select_data, name = 'data_selection'),
+    # Visualizar datos sondeo
+    path("ShowData/", show_dh_data, name = 'dh_show_data'),
+    # Modificar sondeo
+    path("updateData/", update_data, name = 'update_data'),
+    # borrar sondeo
+    path("deleteData/", delete_data, name = 'delete_data'),
+
+
+
+    # Importar imágenes
+    path("import_images/", upload_imgs, name = 'upload_imgs'),
     # Ver imagenes del sondeo
     path("ShowImages/", show_images, name = 'show_images'),
+    # Procesar imágenes
+    path("ProcessImages/", process_images, name = 'process_images'),
 
     # Muestras
     path("import_samples/", import_samples, name = 'import_samples'),
     path("show_samples/", show_samples, name = 'show_samples'),
-    # Desvios
+    # Desvíos
     path("import_deviations/", import_deviations, name = 'import_deviations'),
     path("show_deviations/", show_deviations, name = 'show_desv'),
     # Litologías

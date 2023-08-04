@@ -14,7 +14,6 @@
   {% endif %}
 
   {% for project in data %}
-  <form action="{% url 'modify_projects' %}" method="post">
     {% csrf_token %}
     <section class="card" id="project_card">
       <h5 class="display-7" style="margin-top: 15px; text-align: center;">Proyecto: {{project.project_id }}</h5>
@@ -29,17 +28,20 @@
         </tr>
       </table>
       <section class="container container-fluid" id="card_btn">
-        <form action="{% url 'data_selection' %}" method="get">
-          <p>{{ project.ID }}</p>
-          <input type="text" hidden="true" name="project_id" value="{{project.project_id }}">
-          <button class="btn btn-secondary" type="submit" id="btn" value="info" name="action"><span class="fa fa-eye"
+        <form action="{% url 'info_projects' %}" method="post">
+          <input type="text" hidden="true" name="project" value="{{project.project_id }}">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+          <button class="btn btn-secondary" type="submit" id="btn"><span class="fa fa-eye"
               style="margin-right: 5px;"></span>Ver sondeos</button>
-          <button class="btn btn-danger" type="submit" id="btn" value="delete" name="action"> <span class="fa fa-trash"
+        </form>
+        <form action="{% url 'delete_project' %}" method="post">
+          <input type="text" hidden="true" name="project_id" value="{{project.project_id }}">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+          <button class="btn btn-danger" type="submit" id="btn"> <span class="fa fa-trash"
               style="margin-right: 5px;"></span>Borrar</button>
         </form>
       </section>
     </section>
-  </form>
   {% endfor %}
 
 </section>

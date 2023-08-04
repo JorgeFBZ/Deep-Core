@@ -46,10 +46,9 @@
         </tr>
     </table>
     <section class="button-bar">
-        <form method="get" , action="{% url 'modify_data' %}">
+        <form method="get" , action="{% url 'update_data' %}">
             {% csrf_token %}
             <input type="text" hidden=True name=DH_id value="{{ data.DH_id }}">
-            <input type="text" hidden=True name=action value="update">
             <input type="text" hidden=True name=project value="{{ data.project }}">
             <a class="btn btn-secondary" href="{% url 'home' %}">Inicio</a>
             <input class="btn btn-secondary" type="submit" value="Modificar datos">

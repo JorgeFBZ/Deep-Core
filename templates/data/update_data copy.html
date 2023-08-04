@@ -5,9 +5,10 @@
 <section class="jumbotron jumbotron-fluid" id="main">
     <!-- Actualizar/modificar datos -->
     <!-- Datos de sondeo + imágenes -->
+    {% if action == "update" %}
     {% if not error %}
     <h2 class="display-5">Actualizar datos</h2>
-    <form action="{% url 'update_data' %}" method="post">
+    <form action="{% url 'modify_data' %}" method="post">
         {% csrf_token %}
         {% for field in data %}
         <input hidden=true type="number" name="ID" value="{{ field.ID }}" />
@@ -195,7 +196,7 @@
         </table>
         {% endfor %}
         <section class="button-bar">
-            <button class="btn btn-primary" type="submit">Actualizar datos </button>
+            <button class="btn btn-primary" type="submit" value="update" name="action" method = post>Actualizar datos </button>
             <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
         </section>
     </form>
@@ -207,4 +208,183 @@
         <p>{{ error }}</p>
     </section>
     {% endif %}
-{% endblock %}
+    {% endif %}
+
+    <!-- 
+            Borrar datos 
+        -->
+    {% if action == "delete" %}
+    <section class="alert alert-danger" id="error_box">
+        <h2 class="display-5" style="text-align: center;">Borrar datos</h2>
+        {% for field in data %}
+        <table class="table table-striped">
+            <tr>
+                <td><b>Proyecto:</b></td>
+                <td>{{ field.project }}</td>
+
+                <td><b>Coordenada Norte:</b></td>
+                <td>{{ field.northing }}</td>
+
+            <tr>
+                <td><b>Nombre del sondeo:</b></td>
+                <td>{{ field.DH_id }}</td>
+
+                <td><b>Coordenada Este:</b></td>
+                <td>{{ field.easting }}</td>
+            </tr>
+            <tr>
+                <td><b>Fecha de inicio:</b></td>
+                <td>{{ field.start_date}}</td>
+
+                <td><b>Elevación:</b></td>
+                <td>{{ field.elevation }}</td>
+            </tr>
+            <tr>
+                <td><b>Fecha de finalización:</b></td>
+                <td>{{ field.end_date }}</td>
+
+                <td><b>Zona UTM:</b></td>
+                <td>{{ field.UTM_Zone }}</td>
+            </tr>
+            <tr>
+                <td><b>Azimut teórico:</b></td>
+                <td>{{ field.teo_azimuth }}</td>
+
+                <td><b>Azimut real:</b></td>
+                <td>{{ field.real_azimuth }}</td>
+            </tr>
+            <tr>
+                <td><b>Inclinación teórica:</b></td>
+                <td>{{ field.teo_incl }}</td>
+
+                <td><b>Inclinación real:</b></td>
+                <td>{{ field.real_incl }}</td>
+            </tr>
+        </table>
+        {% endfor %}
+        <form action="{% url 'modify_data' %}" method="post" class="button-bar">
+            {% csrf_token %}
+            {% for field in data %}
+            <input hidden=true type="number" name="ID" value="{{ field.ID }}" />
+            <button class="btn btn-danger" type="submit" value="delete" name="action">Borrar datos </button>
+            <a href="javascript:history.go(-1)" class="btn btn-secondary">Volver</a>
+            {% endfor %}
+        </form>
+    </section>
+    {% endif %}
+    <!-- 
+            Visualizar datos 
+        -->
+    {% if action == "info" %}
+    <h2 class="display-5" style="text-align: center;">Visualizar datos</h2>
+    {% for field in data %}
+    <table class="table table-striped">
+        <tr>
+            <td><b>Proyecto:</b></td>
+            <td>{{ field.project_id }}</td>
+
+            <td><b>Coordenada Norte:</b></td>
+            <td>{{ field.northing }}</td>
+
+        <tr>
+            <td><b>Nombre del sondeo:</b></td>
+            <td>{{ field.DH_id }}</td>
+
+            <td><b>Coordenada Este:</b></td>
+            <td>{{ field.easting }}</td>
+        </tr>
+        <tr>
+            <td><b>Fecha de inicio:</b></td>
+            <td>{{ field.start_date}}</td>
+
+            <td><b>Elevación:</b></td>
+            <td>{{ field.elevation }}</td>
+        </tr>
+        <tr>
+            <td><b>Fecha de finalización:</b></td>
+            <td>{{ field.end_date }}</td>
+
+            <td><b>Zona UTM:</b></td>
+            <td>{{ field.UTM_Zone }}</td>
+        </tr>
+        <tr>
+            <td><b>Azimut teórico:</b></td>
+            <td>{{ field.teo_azimuth }}</td>
+
+            <td><b>Azimut real:</b></td>
+            <td>{{ field.real_azimuth }}</td>
+        </tr>
+        <tr>
+            <td><b>Inclinación teórica:</b></td>
+            <td>{{ field.teo_incl }}</td>
+
+            <td><b>Inclinación real:</b></td>
+            <td>{{ field.real_incl }}</td>
+        </tr>
+    </table>
+    <section style="display: inline-block; padding-top: 25px;">
+        <table  style="margin-bottom: 25px;">
+            <td style="margin-top: auto; margin-bottom: auto;">
+                <tr>
+                    <form action="{% url 'show_litho' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-arrows-v"></span>
+                            Ver datos de litologías</button>
+                    </form>
+                </tr>
+                <tr>
+                    <form action="{% url 'show_desv' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-check-square-o"></span>
+                            Ver datos de desvíos</button>
+                    </form>
+                </tr>
+                <tr>
+                    <form action="{% url 'show_samples' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-dark" style="margin-left: 50px;"> <span class="fa fa-bar-chart"></span>
+                            Ver datos de muestras</button>
+                    </form>
+                </tr>
+                </td></table>
+                <table>
+                <td style="margin-top: auto; margin-bottom: auto;"></td>
+                <tr>
+                    <form action="{% url 'show_images' %}" method="get">
+                        {% csrf_token %}
+                        <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-primary" style="margin-left: 50px;"> <span
+                                class="fa fa-picture-o"></span> Ver imágenes</button>
+                    </form>
+                </tr>
+                <tr>
+                    <form action="{% url 'show_images' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" value="{{ field.project_id }}" id="project_id" name="project_id"
+                            hidden="true">
+                        <input type="text" value="{{ field.DH_id }}" id="DH_id" name="DH_id" hidden="true">
+                        <button class="btn btn-success" style="margin-left: 50px;"> <span class="fa fa-magic"></span>
+                            Procesar
+                            imágenes</button>
+                    </form>
+                </tr>
+            </td>
+        </table>
+        <section style="margin-left: auto; margin-right: auto; padding-top: 50px;">
+            <a href="javascript:history.go(-1)" class="btn btn-secondary" style="margin-left: 50px;">Volver</a>
+
+        </section>
+        {% endfor %}
+        {% endif %}
+        {% endblock %}

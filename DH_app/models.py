@@ -114,7 +114,7 @@ class Images (models.Model):
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
     Images = models.FileField(blank=False)
 
-# Modelo de datos para el índice de litologias (Solo Admin)
+# Modelo de datos para el índice de litologías (Solo Admin)
 class Lithos(models.Model):
     Litho = models.CharField(unique=True, max_length=500)
     Litho_label = models.CharField(unique=True, primary_key=True, max_length=10)
@@ -128,7 +128,7 @@ class Lithos(models.Model):
         verbose_name_plural = "Litologías"
         db_table = "DH_app_Lithos"
 
-# Modelo de datos para las litologias de los sondeos
+# Modelo de datos para las litologías de los sondeos
 class Lithos_DH(models.Model):
     ID = models.AutoField(unique=True, primary_key=True)
     DH_id = models.ForeignKey(General_DH, on_delete=models.CASCADE, blank=False, null=False)

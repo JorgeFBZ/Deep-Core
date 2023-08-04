@@ -14,6 +14,11 @@ html {
 a.navbar-brand:hover {
   color: #F0EAD2;
 }
+.nav-link:active,
+a.navbar-brand:active {
+  color: #e9e7de;
+}
+
 
 a.navbar-brand {
   color: #a98467;
@@ -98,8 +103,8 @@ input{
 .button-bar {
   overflow: auto;
   display: block;
-  margin-top: 15px;
-  margin-bottom: 25px;
+  margin-top: 2%;
+  margin-bottom: 1%;
   padding: 25px;
 }
 
@@ -188,4 +193,27 @@ border-width: 2px;
   margin-top: 25px; 
   width: 90%;
   text-align: center;
+}
+.table-files{
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 50px;
+}
+.table{
+  margin-left: auto;
+  margin-right: auto;
+  table-layout: fixed;
+  width: 75%;
+}
+.table td{
+  height: 75%;
+  justify-content: left;
+  vertical-align: middle;
+}
+.table-info{
+  margin-left: auto;
+  margin-right: auto;
+  table-layout: fixed;
+  width: 30%;
 }

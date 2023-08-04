@@ -18,12 +18,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 '''
-Funciones para el procesado de las images por el modelo de Deep Learning
+Funciones para el procesado de las imágenes por el modelo de Deep Learning
 '''
 import torch, os
 import ultralytics
 import cv2 as cv
 from ultralytics import YOLO
+import logging
 
 def process_imgs(folder_path, model_path):
     # ultralytics.checks()
@@ -36,23 +37,20 @@ def process_imgs(folder_path, model_path):
         if img not in processed_imgs:
             imgs.append(os.path.join(images_path,img))
             imgs_name.append(os.path.split(img)[-1])
-            
     model = YOLO(model_path)
-
     results = model(imgs)
 
     for img, result in zip(imgs_name,results):
         res_plotted = result.plot()
         res_plotted = cv.imwrite(f"{p_images_path}/processed_{img}", res_plotted) # Linux
         #res_plotted = cv.imwrite(f"{p_images_path}\processed_{img}", res_plotted) # Windows
-
 '''
-Listar imagenes de una carpeta
+Listar imágenes de una carpeta
 '''
 def list_images(folder):
     images = []
     for image in os.listdir(folder):
-        img_path =os.path.join(folder, image).split("/django/media/")[-1] # Linux
+        img_path =os.path.join(folder, image).split("/Deep-Core/media/")[-1] # Linux
         #img_path =os.path.join(folder, image).split("\media")[-1] # Windows
         images.append(img_path)
     return images
