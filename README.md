@@ -15,7 +15,7 @@ Este repositorio contiene una aplicación web desarrollada en Django que permite
 
 - Para entrenar el modelo de clasificación y segmentación de imágenes es recomendable una GPU compatible con CUDA
 
-## [Instalación y guía de uso.](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/tutorial.md)
+## [Instalación y guía de uso.](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/Tutorial.md)
 ## Screenshots
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/imgs.png)
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/samples.png)
