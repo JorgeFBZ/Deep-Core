@@ -15,37 +15,7 @@ Este repositorio contiene una aplicación web desarrollada en Django que permite
 
 - Para entrenar el modelo de clasificación y segmentación de imágenes es recomendable una GPU compatible con CUDA
 
-## Instalación
-
-1. Clona este repositorio en tu máquina local:
-
-```bash
-git clone https://github.com/JorgeFBZ/DH_Logger_AI.git
-```
-
-2. Accede al directorio del proyecto:
-
-```bash
-cd DH_Logger_AI
-```
-
-3. Modificar la Secret key del archivo .env
-Generar una nueva SECRET KEY
-https://codinggear.blog/django-generate-secret-key/
-o mediante https://djecrety.ir/
-
-4. Crear la imagen Docker:
-```bash
-docker-compose build
-docker-compose up
-# Por defecto el nombre del contenedor es dh_logger_container
-docker exec -it <nombre_contenedor> python manage.py migrate
-docker exec -it <nombre_contenedor> python manage.py createsuperuser
-```
-5. Acceder a la aplicación:
-```bash
-<host-ip>:8000/home
-```
+## [Instalación y guía de uso.](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/tutorial.md)
 ## Screenshots
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/imgs.png)
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/samples.png)

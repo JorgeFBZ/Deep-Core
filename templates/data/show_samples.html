@@ -25,6 +25,10 @@
             {% endfor %}
         </tbody>
     </table>
+</section>
+<section class="jumbotron jumbotron-fluid" id="main">
+    {{ chart|safe }}
+</section>
 
-    <a href="javascript:history.go(-1)" class="btn btn-secondary" style="margin-left: 50px;">Volver</a>
-    {% endblock %}
+<a href="javascript:history.go(-1)" class="btn btn-secondary" style="margin-left: 50px;">Volver</a>
+{% endblock %}

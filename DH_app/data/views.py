@@ -34,6 +34,7 @@ import pandas as pd
 import json, os, csv
 from PIL import Image
 from DH_app.data.process_images import *
+#import plotly.express as px
 
 def filter_DH (project):
     """
@@ -67,17 +68,17 @@ Crear un proyecto
 def create_project(request):
     if request.method == "GET":
         return render(request, 'data/new_project.html')
-    
+
     elif request.method == "POST":
         form = CreateProject(request.POST).data
         project_name = request.POST.get("project_name")
         serializer = ProjectSerializer(data = form)
 
         if serializer.is_valid():
-            create_directory(project_name) 
-            serializer.save()      
+            create_directory(project_name)
+            serializer.save()
             return render (request, 'data/project_created.html', {'data': serializer.validated_data})
-        
+
         else:
             logging.error(serializer.errors)
             return render (request, 'data/project_created.html',serializer.errors)
@@ -88,7 +89,7 @@ Borrar proyecto
 @login_required(login_url=settings.LOGIN_URL)
 @permission_required("DH_app.delete_projects")
 @api_view(["POST"])
-def delete_project(request):    
+def delete_project(request):
     project_name = request.POST.get("project_id")
     token = str(request.POST.get("csrfmiddlewaretoken"))
     Projects.objects.filter(project_name=project_name).delete()
@@ -124,12 +125,12 @@ def show_project(request):
         DH_count = int(General_DH.objects.filter(project_id=project_name).count())
         project_data = {"project_id": project_name, "comments": comments, "DH_count": DH_count}
         data_response.append(project_data)
-    
+
     return (render( request, 'data/show_projects.html', {"data": data_response}))
 
 '''
 Crear un nuevo sondeo
-''' 
+'''
 @login_required(login_url=settings.LOGIN_URL)
 @permission_required("DH_app.add_general_dh")
 @api_view(["GET",'POST'])
@@ -148,7 +149,7 @@ def new_hole (request):
             create_directory(project_name, DH_id)
             serializer.save()
             return render(request, "data/correct_import.html", {'data': serializer.validated_data})
-        
+
         else:
             logging.error(serializer.errors)
             errors = [serializer.errors [error][0] for error in serializer.errors]
@@ -158,9 +159,8 @@ def new_hole (request):
 
 '''
 Borrar sondeo de la BD
-'''       
+'''
 @login_required(login_url=settings.LOGIN_URL)
-#FIXME Cambiar permisos
 @permission_required("DH_app.delete_general_dh")
 @api_view(["GET","POST"])
 def delete_data (request):
@@ -172,7 +172,7 @@ def delete_data (request):
         ID = request.POST.get("ID")
         General_DH.objects.filter(ID=ID).delete()
         return render (request, 'data/deleted_data.html', {"ID": ID})
-        
+
 '''
 Actualizar datos de un sondeo
 '''
@@ -181,10 +181,10 @@ Actualizar datos de un sondeo
 @api_view(["GET","POST"])
 def update_data (request):
     if request.method == "GET":
-        ID = request.GET.get('DH_id')
-        DH_data = General_DH.objects.filter(DH_id=ID).values()
+        ID = request.GET.get('ID')
+        DH_data = General_DH.objects.filter(ID=ID)
         return render (request, 'data/update_data.html', {'data': DH_data})
-    
+
     if request.method == "POST":
         DH_id = request.POST.get("DH_id")
         DH_DB = General_DH.objects.filter(DH_id=DH_id) # DB data from ID
@@ -206,11 +206,11 @@ def update_data (request):
             DH_DB.update(**data)
             DH_data = General_DH.objects.filter(DH_id=DH_id).values()[0]
             return render (request, 'data/show_data.html', {'data': DH_data})
-        
+
         except Exception as e:
             logging.ERROR(e)
             return render (request, 'data/update_data.html', { "error": e })
-            
+
 '''
 Visualizar datos de un sondeo (tabla -> General_DH)
 '''
@@ -219,7 +219,7 @@ Visualizar datos de un sondeo (tabla -> General_DH)
 @api_view(["GET"])
 def show_dh_data (request):
 
-    ID = request.GET.get('ID')       
+    ID = request.GET.get('ID')
     DH_data = General_DH.objects.filter(ID=ID).values()[0]
     return render (request, 'data/show_data.html', {'data': DH_data})
 
@@ -234,13 +234,13 @@ def select_data(request):
         projects = Projects.objects.all().values_list("project_name")
         projects = [p[0] for p in projects]
         return render (request, 'data/DH_selection.html', {"DH_data": None, "projects": projects})
-    
+
     elif project != None:
         data = filter_DH(project)
         if data:
-            return render (request,'data/DH_selection.html', {"DH_data": data, "projects": None}) 
+            return render (request,'data/DH_selection.html', {"DH_data": data, "projects": None})
         else:
-            return render (request,'data/DH_selection.html', {"Error": True}) 
+            return render (request,'data/DH_selection.html', {"Error": True})
 
 '''
 ----------------------------------------------------
@@ -260,17 +260,17 @@ def import_samples (request):
             data = file.read().decode("utf-8")
             csv_data = csv.reader(data.splitlines(), delimiter=settings.CSV_DELIMITER)
             next(csv_data) # saltar la primera fila con los encabezdos
-            
+
             for row in csv_data:
                 DH_id_file = row[0]
-                
+
                 try:
                     DH_id = General_DH.objects.get(DH_id = DH_id_file)
                     From = float(row[1])
                     To = float(row[2])
                     Element_1 = float(row[3])
                     Element_2 = float(row[4])
-                
+
                 except General_DH.DoesNotExist:
                     error = "El sondeo no esta en la base de datos."
                     return render(request, "data/import_files.html", {"error": error})
@@ -278,10 +278,10 @@ def import_samples (request):
                 except ValueError:
                     error = "Error al importar los datos: alguna de las columnas no contiene valores válidos"
                     return render(request, "data/import_files.html", {"error": error})
-                
+
                 except Exception:
                     error = "Error al importar los datos."
-                    return render(request, "data/import_files.html", {"error": error})                            
+                    return render(request, "data/import_files.html", {"error": error})
 
                 try:
                     Sample_model(
@@ -291,13 +291,13 @@ def import_samples (request):
                         element_1 = Element_1,
                         element_2 = Element_2
                     ).save()
-                
+
                 except Exception as e:
                     logging.ERROR(e)
                     error = "Error al importar los datos."
-                    return render(request, "data/import_files.html", {"error": error})                            
-            
-            return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})                            
+                    return render(request, "data/import_files.html", {"error": error})
+
+            return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})
         else:
             error = "No hay ningún fichero para importar."
             return render(request, "data/import_files.html", {"error": error})
@@ -317,7 +317,7 @@ def import_deviations (request):
         if request.FILES.get("deviations"):
             file = request.FILES.get("deviations")
             data = file.read().decode("utf-8")
-            csv_data = csv.reader(data.splitlines(), delimiter=settings.CSV_DELIMITER) 
+            csv_data = csv.reader(data.splitlines(), delimiter=settings.CSV_DELIMITER)
             next(csv_data) # saltar la primera fila con los encabezdos
             for row in csv_data:
                 DH_id_file = row[0]
@@ -327,18 +327,18 @@ def import_deviations (request):
                     To = float(row[2])
                     inclination = float(row[3])
                     azimuth = float(row[4])
- 
+
                 except General_DH.DoesNotExist:
                     error = "El sondeo no esta en la base de datos."
                     return render(request, "data/import_files.html", {"error": error})
-               
+
                 except ValueError:
                     error = "Error al importar los datos: alguna de las columnas no contiene valores válidos"
                     return render(request, "data/import_files.html", {"error": error})
-                
+
                 except Exception:
                     error = "Error al cargar los datos."
-                    return render(request, "data/import_files.html", {"error": error})                            
+                    return render(request, "data/import_files.html", {"error": error})
 
                 try:
                     Desv_model(
@@ -351,8 +351,8 @@ def import_deviations (request):
                 except Exception as e:
                     logging.ERROR(e)
                     error = "Error al importar los datos."
-                    return render(request, "data/import_files.html", {"error": error})                            
-            return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})                            
+                    return render(request, "data/import_files.html", {"error": error})
+            return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})
         else:
             error = "No hay ningún fichero para importar."
             return render(request, "data/import_files.html", {"error": error})
@@ -371,7 +371,7 @@ def upload_imgs(request):
         form = UploadFileForm()
         DH = General_DH.objects.filter(ID=ID).values()[0]
         return render(request, "data/import_files.html", {"DH": DH, "form":form})
-    
+
     elif request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         ID = request.POST.get("DH_id")
@@ -397,7 +397,7 @@ def upload_imgs(request):
                 message = f"{count} Imagenes importadas correctamente"
                 return render(request, "data/import_files.html", {"message": message})
             else: raise FileNotFoundError
-        
+
         except Exception as e:
             logging.ERROR("Upload ERROR:", e)
             error = "Se ha producido un error al importar las imagenes."
@@ -414,11 +414,11 @@ def import_litho (request):
     if request.FILES.get("litho"):
         file = request.FILES.get("litho")
         data = file.read().decode("utf-8")
-        csv_data = csv.reader(data.splitlines(), delimiter=settings.CSV_DELIMITER) 
+        csv_data = csv.reader(data.splitlines(), delimiter=settings.CSV_DELIMITER)
         next(csv_data) # saltar la primera fila con los encabezdos
         for row in csv_data:
             DH_id_file = row[0]
-            
+
             try:
                 DH_id = General_DH.objects.get(DH_id = DH_id_file)
                 From = float(row[1])
@@ -437,11 +437,11 @@ def import_litho (request):
             except ValueError:
                 error = "Error al importar los datos: alguna de las columnas no contiene valores válidos"
                 return render(request, "data/import_files.html", {"error": error})
-            
+
             except Exception as e:
                 logging.ERROR("Upload Error: ",e)
                 error = f"Error al cargar los datos. {e}"
-                return render(request, "data/import_files.html", {"error": error})                            
+                return render(request, "data/import_files.html", {"error": error})
 
             try:
                 Lithos_DH(
@@ -452,9 +452,9 @@ def import_litho (request):
                 ).save()
             except Exception as e:
                 error = f"Error al cargar los datos. {e}"
-                return render(request, "data/import_files.html", {"error": error})                            
-        return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})                            
-    
+                return render(request, "data/import_files.html", {"error": error})
+        return render(request, "data/import_files.html", {"message": "Datos importados correctamente."})
+
     else:
         error = "No hay ningún fichero para importar."
         return render(request, "data/import_files.html", {"error": error})
@@ -508,7 +508,7 @@ def process_images(request):
             DH_id = DH_name
         path = create_directory (project_id, DH_id)
 
-        model_path =os.path.join(settings.MEDIA_ROOT,"YOLO_models/default.pt") # Path al modelo
+        model_path = settings.DL_MODEL_PATH
         if os.path.exists(model_path):
             pass
         else:
@@ -526,7 +526,7 @@ def process_images(request):
             p_images= list_images(p_images_path)
             show_images = zip(images, p_images)
             return render(request, "data/show_images.html", {"images":show_images, "MEDIA_URL":settings.MEDIA_URL, "DH_id":DH_name, "project": project_name})
-    
+
     except Exception as e:
         error_render= "Error al procesar las imágenes. "+ error
         # logging.ERROR(str(e))
@@ -537,12 +537,18 @@ def process_images(request):
 @api_view(["GET"])
 @permission_required("DH_app.view_sample_model")
 def show_samples(request):
-    
+
     if request.method == "GET":
         DH_id = request.GET.get("DH_id")
         sondeo = get_object_or_404(General_DH, DH_id=DH_id)
-        data = Sample_model.objects.filter(DH_id=sondeo).values()
-        return render(request, "data/show_samples.html", {"data": data, "DH_id": DH_id})
+        data = Sample_model.objects.filter(DH_id=sondeo)
+        # fig = px.line (
+        #     x=[d.To for d in data] ,
+        #     y = [d.element_1 for d in data]
+        # )
+        # chart = fig.to_html()
+
+        return render(request, "data/show_samples.html", {"data": data.values(), "DH_id": DH_id, "chart": chart})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
 
@@ -551,7 +557,7 @@ def show_samples(request):
 @api_view(["GET"])
 @permission_required("DH_app.view_desv_model")
 def show_deviations(request):
-    
+
     if request.method == "GET":
         DH_id = request.GET.get("DH_id")
         sondeo = get_object_or_404(General_DH, DH_id=DH_id)
@@ -559,7 +565,7 @@ def show_deviations(request):
         return render(request, "data/show_desv.html", {"data": data, "DH_id": DH_id})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 @login_required(login_url=settings.LOGIN_URL)
 @api_view(["GET"])
@@ -572,4 +578,3 @@ def show_litho(request):
         return render(request, "data/show_litho.html", {"data": data, "DH_id": DH_id})
     else:
         return Response( status=status.HTTP_400_BAD_REQUEST)
-    

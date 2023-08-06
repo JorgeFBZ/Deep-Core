@@ -225,6 +225,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # File upload configuration
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
+DL_MODEL_PATH = os.path.join(MEDIA_ROOT,"YOLO_models/default.pt") # Path al modelo
+
 # CSV Delimiter
 # CSV_DELIMITER = ";"
 CSV_DELIMITER = "\t"
