@@ -93,7 +93,7 @@ Para poder crear nuevos sondeos es necesario asignarlos a un proyecto ya existen
 En esta página se pueden visualizar los proyectos ya existentes en la base de datos y, además, borrar y visualizar los sondeos que contiene dicho proyecto.
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/proyectos.png)
 
-Si se borra un proyecto, se borraran todos los sondeos y datos asociados al mismo.
+Si se borra un proyecto, se borrarán todos los sondeos y datos asociados al mismo.
 
 ## 2.3. Crear un nuevo sondeo:
 Introducir la información necesaria en el formulario y seleccionar el proyecto al que pertenece el sondeo del menú desplegable.
@@ -118,4 +118,4 @@ En esta versión solamente es posible editar los datos del emboquille. La edici�
 ### 2.4.4. Borrar un sondeo:
 Para borrar los datos de un sondeo, se pulsa en el botón indicado en la imagen inferior.
 ![Image text](https://github.com/JorgeFBZ/Deep-core/blob/master/screenshots/tutorial/borrar_sondeo.png)
-Al borrar un sondeo, se borraran todos los datos asociados al mismo.
+Al borrar un sondeo, se borrarán todos los datos asociados al mismo.
